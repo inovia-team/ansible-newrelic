@@ -8,6 +8,8 @@
     url: https://download.newrelic.com/548C16BF.gpg
     id: 548C16BF
     state: present
+  tags:
+  - newrelic
 
 - name: Debian | Add New Relic repository
   copy:
@@ -17,11 +19,15 @@
     group: root
     mode: 0644
   register: newrelic_repo
+  tags:
+  - newrelic
 
 - name: Debian | apt-get update
   apt:
     update_cache: yes
   when: newrelic_repo.changed
+  tags:
+  - newrelic
 
 - name: Debian | Install New Relic Sysmond
   apt:
@@ -31,3 +37,18 @@
     state: latest
   notify:
     - Restart New Relic
+  tags:
+  - newrelic
+
+- name: Debian | Install New Relic PHP5
+  apt:
+    pkg: newrelic-php5
+    update_cache: yes
+    cache_valid_time: 86400
+    state: latest
+  notify:
+    - Restart New Relic
+  tags:
+  - newrelic
+  when:
+  - newrelic_php5 is defined and newrelic_php5

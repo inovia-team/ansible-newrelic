@@ -2,6 +2,8 @@
 - name: RedHat | Set newrelic_loaded_os_family
   set_fact:
     newrelic_loaded_os_family: "{{ ansible_os_family }}"
+  tags:
+  - newrelic
 
 - name: RedHat | Add the New Relic repository key
   copy:
@@ -10,6 +12,8 @@
     owner: root
     group: root
     mode: 0644
+  tags:
+  - newrelic
 
 - name: RedHat | Add the Rew Relic repository file
   copy:
@@ -18,6 +22,8 @@
     owner: root
     group: root
     mode: 0644
+  tags:
+  - newrelic
 
 - name: RedHat | Install New Relic Sysmond
   yum:
@@ -25,3 +31,5 @@
     state: latest
   notify:
     - Restart New Relic
+  tags:
+  - newrelic
